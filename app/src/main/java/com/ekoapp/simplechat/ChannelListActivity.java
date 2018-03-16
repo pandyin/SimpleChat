@@ -23,8 +23,8 @@ public class ChannelListActivity extends BaseActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedState) {
+        super.onCreate(savedState);
         setContentView(R.layout.activity_channel_list);
         setSupportActionBar(toolbar);
 

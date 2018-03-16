@@ -1,5 +1,6 @@
 package com.ekoapp.simplechat;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ekoapp.ekosdk.EkoChannel;
+import com.ekoapp.simplechat.intent.ViewMessagesIntent;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -46,19 +48,25 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ChannelViewHolder holder, int position) {
         EkoChannel channel = staticChannels.get(position);
+        holder.channelId = channel.getChannelId();
         holder.channelIdTextView.setText(String.valueOf(channel));
     }
 
 
     static class ChannelViewHolder extends BaseViewHolder {
 
+        String channelId;
+
         @BindView(R.id.channel_id_textview)
         TextView channelIdTextView;
+
 
         ChannelViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(view -> {
-                //
+                Context context = view.getContext();
+                ViewMessagesIntent intent = new ViewMessagesIntent(context, channelId);
+                context.startActivity(intent);
             });
         }
     }

@@ -21,6 +21,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".MessageListActivity"
+            android:label="Messages" />
+
     </application>
 
 </manifest>
