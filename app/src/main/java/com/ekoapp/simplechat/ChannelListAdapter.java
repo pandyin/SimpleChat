@@ -1,18 +1,39 @@
 package com.ekoapp.simplechat;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ekoapp.ekosdk.adapter.EkoChannelAdapter;
+import com.ekoapp.ekosdk.EkoChannel;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 import butterknife.BindView;
 
 import static com.ekoapp.simplechat.ChannelListAdapter.ChannelViewHolder;
 
-public class ChannelListAdapter extends EkoChannelAdapter<ChannelViewHolder> {
+public class ChannelListAdapter extends RecyclerView.Adapter<ChannelViewHolder> {
+
+    List<EkoChannel> staticChannels = Lists.newArrayList();
+
+
+    ChannelListAdapter() {
+        EkoChannel smtm = new EkoChannel();
+        smtm.setChannelId("show_me_the_money_th_finale");
+        EkoChannel tvt = new EkoChannel();
+        tvt.setChannelId("the_voice_thailand_s6_w15");
+        staticChannels.add(smtm);
+        staticChannels.add(tvt);
+    }
+
+    @Override
+    public int getItemCount() {
+        return staticChannels.size();
+    }
 
     @NonNull
     @Override
@@ -24,7 +45,8 @@ public class ChannelListAdapter extends EkoChannelAdapter<ChannelViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ChannelViewHolder holder, int position) {
-        holder.channelIdTextView.setText(String.valueOf(position));
+        EkoChannel channel = staticChannels.get(position);
+        holder.channelIdTextView.setText(String.valueOf(channel));
     }
 
 
