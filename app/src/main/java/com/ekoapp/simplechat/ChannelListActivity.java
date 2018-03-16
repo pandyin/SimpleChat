@@ -9,7 +9,7 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+public class ChannelListActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -21,7 +21,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_channel_list);
         setSupportActionBar(toolbar);
 
         fab.setOnClickListener(view ->
@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_channel_list, menu);
         return true;
     }
 
