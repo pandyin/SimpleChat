@@ -39,7 +39,7 @@ public class ChannelListActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_channel_list, menu);
+        //getMenuInflater().inflate(R.menu.menu_channel_list, menu);
         return true;
     }
 
