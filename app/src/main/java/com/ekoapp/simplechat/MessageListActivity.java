@@ -4,9 +4,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
+import com.ekoapp.ekosdk.EkoClient;
+import com.ekoapp.ekosdk.EkoMessageRepository;
 import com.ekoapp.simplechat.intent.ViewMessagesIntent;
 
+import butterknife.BindView;
+
 public class MessageListActivity extends BaseActivity {
+
+    @BindView(R.id.message_list_recyclerview)
+    RecyclerView messageListRecyclerView;
+
+    private final EkoMessageRepository messageRepository = EkoClient.newMessageRepository();
+    private final MessageListAdapter adapter = new MessageListAdapter();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedState) {
@@ -17,9 +28,9 @@ public class MessageListActivity extends BaseActivity {
         setTitle(channelId);
 
         if (channelId != null) {
-            // FIXME butter knife
-            RecyclerView rv = findViewById(R.id.message_list_recyclerview);
-            rv.setAdapter(new MessageListAdapter());
+            messageListRecyclerView.setAdapter(adapter);
+            messageRepository.getMessageCollection(channelId)
+                    .observe(this, adapter::submitList);
         }
     }
 }

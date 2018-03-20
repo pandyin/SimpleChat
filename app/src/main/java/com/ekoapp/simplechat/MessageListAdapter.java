@@ -1,22 +1,23 @@
 package com.ekoapp.simplechat;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ekoapp.ekosdk.EkoMessage;
+import com.ekoapp.ekosdk.EkoObjects;
+import com.ekoapp.ekosdk.adapter.EkoMessageAdapter;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
 import butterknife.BindView;
 
 import static com.ekoapp.simplechat.MessageListAdapter.MessageViewHolder;
 
-public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> {
-
-    @Override
-    public int getItemCount() {
-        return 10000;
-    }
+public class MessageListAdapter extends EkoMessageAdapter<MessageViewHolder> {
 
     @NonNull
     @Override
@@ -28,8 +29,17 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        // FIXME implement this
-        holder.textView.setText(String.valueOf(position));
+        EkoMessage message = getItem(position);
+
+        if (EkoObjects.isProxy(message)) {
+            holder.textView.setText(position + " loading...");
+        } else {
+            String userId = message.getUserId();
+            String time = new DateTime(message.getCreatedAt()).toString(DateTimeFormat.shortDateTime());
+            String text = message.getData().get("text").getAsString();
+            holder.textView.setText(String.format("%s (%s):\n%s", userId, time, text));
+        }
+
     }
 
 
