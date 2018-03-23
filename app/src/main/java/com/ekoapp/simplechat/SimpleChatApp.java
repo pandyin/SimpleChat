@@ -1,10 +1,10 @@
 package com.ekoapp.simplechat;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.ekoapp.ekosdk.EkoClient;
 
-public class SimpleChatApp extends Application {
+public class SimpleChatApp extends MultiDexApplication {
 
     @Override
     public void onCreate() {
