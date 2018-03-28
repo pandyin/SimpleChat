@@ -3,7 +3,7 @@
     <shortcut
         android:shortcutId="compose"
         android:enabled="true"
-        android:icon="@drawable/ic_send"
+        android:icon="@drawable/ic_chat_black_24dp"
         android:shortcutShortLabel="@string/chatkit_shortcut_short_label"
         android:shortcutLongLabel="@string/chatkit_shortcut_long_label"
         android:shortcutDisabledMessage="@string/chatkit_shortcut_disabled_text">
