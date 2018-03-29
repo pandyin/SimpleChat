@@ -1,5 +1,6 @@
 package com.ekoapp.simplechat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.ekoapp.ekosdk.EkoChannel;
 import com.ekoapp.ekosdk.EkoChannelRepository;
 import com.ekoapp.ekosdk.EkoClient;
+import com.ekoapp.simplechat.chatkit.ChatKitChannelListActivity;
 
 import butterknife.BindView;
 import io.reactivex.Completable;
@@ -70,6 +72,9 @@ public class ChannelListActivity extends BaseActivity {
                     })
                     .show();
             return true;
+        } else if (id == R.id.action_chatkit) {
+            Intent chatKit = new Intent(this, ChatKitChannelListActivity.class);
+            startActivity(chatKit);
         }
         return super.onOptionsItemSelected(item);
     }
