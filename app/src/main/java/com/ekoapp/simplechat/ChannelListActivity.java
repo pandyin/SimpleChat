@@ -66,7 +66,7 @@ public class ChannelListActivity extends BaseActivity {
             new MaterialDialog.Builder(this)
                     .title(R.string.change_user_id)
                     .inputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
-                    .input(null, null, false, (dialog, input) -> {
+                    .input(null, EkoClient.getUserId(), false, (dialog, input) -> {
                         String userId = String.valueOf(input);
                         changeUserId(userId);
                     })
