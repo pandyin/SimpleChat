@@ -2,6 +2,7 @@ package com.ekoapp.simplechat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.ekoapp.ekosdk.EkoChannel;
 import com.ekoapp.ekosdk.EkoChannelRepository;
 import com.ekoapp.ekosdk.EkoClient;
 import com.ekoapp.simplechat.chatkit.ChatKitChannelListActivity;
+import com.google.common.base.MoreObjects;
 
 import butterknife.BindView;
 import io.reactivex.Completable;
@@ -39,9 +41,13 @@ public class ChannelListActivity extends BaseActivity {
         setContentView(R.layout.activity_channel_list);
         setSupportActionBar(toolbar);
 
-        EkoClient.registerDevice("android_user_id", "Android 1")
-                .andThen(Completable.fromAction(() -> channelRepository.getOrCreateById("show_me_the_money_th_finale", EkoChannel.Type.STANDARD)))
-                .subscribe();
+        String userId = MoreObjects.firstNonNull(EkoClient.getUserId(), "android_user_id");
+        String displayName = MoreObjects.firstNonNull(EkoClient.getDisplayName(), "Android 1");
+
+        EkoClient.registerDevice(userId, displayName).subscribe();
+
+        channelRepository.getOrCreateById("show_me_the_money_th_finale", EkoChannel.Type.STANDARD);
+        channelRepository.getOrCreateById("the_voice_thailand_s6_w15", EkoChannel.Type.STANDARD);
 
         fab.setOnClickListener(view ->
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -63,20 +69,35 @@ public class ChannelListActivity extends BaseActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_change_user_id) {
-            new MaterialDialog.Builder(this)
-                    .title(R.string.change_user_id)
-                    .inputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
-                    .input(null, EkoClient.getUserId(), false, (dialog, input) -> {
-                        String userId = String.valueOf(input);
-                        changeUserId(userId);
-                    })
-                    .show();
+            showDialog(R.string.change_user_id, EkoClient.getUserId(), (dialog, input) -> {
+                String userId = String.valueOf(input);
+                changeUserId(userId);
+            });
             return true;
+        } else if (id == R.id.action_change_display_name) {
+            showDialog(R.string.change_display_name, EkoClient.getDisplayName(), (dialog, input) -> {
+                String displayName = String.valueOf(input);
+                EkoClient.setDisplayName(displayName)
+                        .subscribe();
+            });
+        } else if (id == R.id.action_join_channel) {
+            showDialog(R.string.join_channel, "", (dialog, input) -> {
+                String channelId = String.valueOf(input);
+                channelRepository.getOrCreateById(channelId, EkoChannel.Type.STANDARD);
+            });
         } else if (id == R.id.action_chatkit) {
             Intent chatKit = new Intent(this, ChatKitChannelListActivity.class);
             startActivity(chatKit);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog(@StringRes int title, CharSequence prefill, MaterialDialog.InputCallback callback) {
+        new MaterialDialog.Builder(this)
+                .title(title)
+                .inputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
+                .input(null, prefill, false, callback)
+                .show();
     }
 
     private void changeUserId(String userId) {
