@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ekoapp.ekosdk.EkoChannel;
+import com.ekoapp.ekosdk.EkoObjects;
 import com.ekoapp.simplechat.intent.ViewMessagesIntent;
 import com.google.common.collect.Lists;
 
@@ -48,8 +49,23 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ChannelViewHolder holder, int position) {
         EkoChannel channel = staticChannels.get(position);
-        holder.channelId = channel.getChannelId();
-        holder.channelIdTextView.setText(String.valueOf(channel));
+
+        if (EkoObjects.isProxy(channel)) {
+            holder.channelId = null;
+            holder.channelIdTextView.setText("loading...");
+        } else {
+            String text = new StringBuilder()
+                    .append("id: ")
+                    .append(channel.getChannelId())
+                    .append("\nname: ")
+                    .append(channel.getDisplayName())
+                    .append("\nmember count: ")
+                    .append(channel.getMemberCount())
+                    .toString();
+
+            holder.channelId = channel.getChannelId();
+            holder.channelIdTextView.setText(text);
+        }
     }
 
 
