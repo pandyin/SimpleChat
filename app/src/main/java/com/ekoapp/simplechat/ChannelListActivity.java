@@ -56,6 +56,9 @@ public class ChannelListActivity extends BaseActivity {
 
         ChannelListAdapter adapter = new ChannelListAdapter();
         channelListRecyclerView.setAdapter(adapter);
+
+        channelRepository.getChannelCollection()
+                .observe(this, adapter::submitList);
     }
 
     @Override
