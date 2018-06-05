@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -15,6 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.ekoapp.ekosdk.EkoChannel;
 import com.ekoapp.ekosdk.EkoChannelRepository;
 import com.ekoapp.ekosdk.EkoClient;
+import com.ekoapp.ekosdk.sdk.BuildConfig;
 import com.ekoapp.simplechat.chatkit.ChatKitChannelListActivity;
 import com.google.common.base.MoreObjects;
 
@@ -39,6 +41,11 @@ public class ChannelListActivity extends BaseActivity {
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
         setContentView(R.layout.activity_channel_list);
+        final String appName = getString(R.string.app_name);
+        toolbar.setTitle(String.format("%s %s: %s", appName, "Eko SDK", BuildConfig.VERSION_NAME));
+        toolbar.setSubtitle(String.format("%s", BuildConfig.EKO_HTTP_URL));
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, android.R.color.white));
+        toolbar.setSubtitleTextColor(ContextCompat.getColor(this, android.R.color.white));
         setSupportActionBar(toolbar);
 
         String userId = MoreObjects.firstNonNull(EkoClient.getUserId(), "android_user_id_" + System.currentTimeMillis());
