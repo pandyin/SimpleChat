@@ -45,7 +45,7 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
 
-    implementation 'com.ekoapp.ekosdk:ekosdk:0.11.0'
+    implementation 'com.ekoapp.ekosdk:ekosdk:0.11.2'
 
     implementation 'com.github.stfalcon:chatkit:0.2.2'
 
