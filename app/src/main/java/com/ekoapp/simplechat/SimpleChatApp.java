@@ -9,6 +9,6 @@ public class SimpleChatApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        EkoClient.setup("b3bde15c3989f86045658e4a530a1688d1088be0be3d6f25");
+        EkoClient.setup("b3bee95c3ed2f3674e35894a57091688d05fdee2b8336b2b");
     }
 }

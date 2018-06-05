@@ -41,10 +41,10 @@ public class ChannelListActivity extends BaseActivity {
         setContentView(R.layout.activity_channel_list);
         setSupportActionBar(toolbar);
 
-        String userId = MoreObjects.firstNonNull(EkoClient.getUserId(), "android_user_id");
-        String displayName = MoreObjects.firstNonNull(EkoClient.getDisplayName(), "Android 1");
+        String userId = MoreObjects.firstNonNull(EkoClient.getUserId(), "android_user_id_" + System.currentTimeMillis());
+        String displayName = MoreObjects.firstNonNull(EkoClient.getDisplayName(), "Android");
 
-        EkoClient.registerDevice(userId, displayName).subscribe();
+        register(userId, displayName);
 
         channelRepository.getOrCreateById("show_me_the_money_th_finale", EkoChannel.Type.STANDARD);
         channelRepository.getOrCreateById("the_voice_thailand_s6_w15", EkoChannel.Type.STANDARD);
@@ -74,7 +74,7 @@ public class ChannelListActivity extends BaseActivity {
         if (id == R.id.action_change_user_id) {
             showDialog(R.string.change_user_id, EkoClient.getUserId(), (dialog, input) -> {
                 String userId = String.valueOf(input);
-                changeUserId(userId);
+                register(userId, userId);
             });
             return true;
         } else if (id == R.id.action_change_display_name) {
@@ -103,10 +103,12 @@ public class ChannelListActivity extends BaseActivity {
                 .show();
     }
 
-    private void changeUserId(String userId) {
-        EkoClient.registerDevice(userId, userId)
+    private void register(String userId, String displayName) {
+        EkoClient.registerDevice(userId, displayName)
                 .andThen(Completable.fromAction(() -> {
-                    //channelRepository.getChannelCollection();
+                    String publicChannel = "public_eko";
+                    channelRepository.getOrCreateById(publicChannel, EkoChannel.Type.STANDARD);
+                    channelRepository.setDisplayName(publicChannel, "Public Eko standard channel");
                 }))
                 .subscribe();
     }
