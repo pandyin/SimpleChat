@@ -90,6 +90,16 @@ public class ChannelListActivity extends BaseActivity {
                 EkoClient.setDisplayName(displayName)
                         .subscribe();
             });
+        } else if (id == R.id.action_change_api_key) {
+            showDialog(R.string.change_api_key, ApiKeySharedPref.get(), (dialog, input) -> {
+                final String userId = EkoClient.getUserId();
+                final String displayName = EkoClient.getDisplayName();
+                String apiKey = String.valueOf(input);
+                ApiKeySharedPref.set(apiKey);
+                EkoClient.setup(apiKey)
+                        .doOnComplete(() -> register(userId, displayName))
+                        .subscribe();
+            });
         } else if (id == R.id.action_join_channel) {
             showDialog(R.string.join_channel, "", (dialog, input) -> {
                 String channelId = String.valueOf(input);
